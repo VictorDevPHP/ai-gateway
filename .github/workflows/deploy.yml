@@ -20,6 +20,17 @@ jobs:
           extensions: mbstring, dom, fileinfo, mysql, pdo_mysql, bcmath, gd, intl, zip
           coverage: none
 
+      - name: Validar secrets de deploy
+        run: |
+          missing=""
+          [ -z "${{ secrets.VPS_HOST }}" ] && missing="${missing} VPS_HOST"
+          [ -z "${{ secrets.VPS_USERNAME }}" ] && missing="${missing} VPS_USERNAME"
+          [ -z "${{ secrets.VPS_PASSWORD }}" ] && missing="${missing} VPS_PASSWORD"
+          if [ -n "$missing" ]; then
+            echo "::error::Secrets ausentes ou vazios:$missing. Configure no repositório ou na org (com acesso a este repo)."
+            exit 1
+          fi
+
       - name: Deploy to VPS
         uses: appleboy/ssh-action@v1.0.3
         with:
@@ -29,7 +40,7 @@ jobs:
           port: ${{ secrets.VPS_PORT || 22 }}
           script: |
             set -e
-            cd ${{ secrets.VPS_PROJECT_PATH }}
+            cd /var/www/ai-gateway
             git fetch origin main
             git reset --hard origin/main
             composer install --no-interaction --no-dev --prefer-dist --optimize-autoloader
