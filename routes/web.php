@@ -7,9 +7,3 @@ Route::get('/', function () {
         'message' => 'Em desenvolvimento... Aguarde... 🤖'
     ]);
 });
-
-Route::post('/', function () {
-    return response()->json([
-        'message' => 'Em desenvolvimento...'
-    ]);
-});
