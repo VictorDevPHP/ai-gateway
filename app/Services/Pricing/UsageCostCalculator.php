@@ -8,9 +8,7 @@ class UsageCostCalculator
      * Custo estimado em USD a partir de preço por 1M tokens (input/output) e uso.
      *
      * @param  array{cost: array{input_usd_per_million: float, output_usd_per_million: float}}  $model
-     * @param  int  $promptTokens
-     * @param  int  $completionTokens
-     * @return array{total: float}
+     * @return float Custo total em USD (arredondado)
      */
     public function calculate(array $model, int $promptTokens, int $completionTokens): float
     {

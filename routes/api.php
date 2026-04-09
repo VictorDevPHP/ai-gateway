@@ -3,7 +3,7 @@
 use App\Http\Controllers\Api\NameClassificationController;
 use Illuminate\Support\Facades\Route;
 
-Route::middleware('auth:api')->group(function () {
+Route::middleware('api.token')->group(function () {
 
     Route::group(['prefix' => 'agents'], function () {
 

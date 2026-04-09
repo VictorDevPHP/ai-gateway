@@ -13,19 +13,18 @@ class UsageCostCalculatorTest extends TestCase
     {
         $calc = new UsageCostCalculator;
 
-        $result = $calc->fromMillionTokenPrices(
+        $result = $calc->calculate(
             [
-                'input_usd_per_million' => 0.05,
-                'output_usd_per_million' => 0.08,
+                'cost' => [
+                    'input_usd_per_million' => 0.05,
+                    'output_usd_per_million' => 0.08,
+                ],
             ],
             1_000_000,
             1_000_000,
         );
 
-        $this->assertSame('USD', $result['currency']);
-        $this->assertSame(0.05, $result['input_usd']);
-        $this->assertSame(0.08, $result['output_usd']);
-        $this->assertSame(0.13, $result['total_usd']);
+        $this->assertSame(0.13, $result);
     }
 
     #[Test]
@@ -33,12 +32,17 @@ class UsageCostCalculatorTest extends TestCase
     {
         $calc = new UsageCostCalculator;
 
-        $result = $calc->fromMillionTokenPrices(
-            ['input_usd_per_million' => 0.10, 'output_usd_per_million' => 0.20],
+        $result = $calc->calculate(
+            [
+                'cost' => [
+                    'input_usd_per_million' => 0.10,
+                    'output_usd_per_million' => 0.20,
+                ],
+            ],
             0,
             0,
         );
 
-        $this->assertSame(0.0, $result['total_usd']);
+        $this->assertSame(0.0, $result);
     }
 }
