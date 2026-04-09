@@ -58,6 +58,11 @@ class NameClassificationService
         }
     }
 
+    /**
+     * @param string $name
+     * @param string|null $email
+     * @return string
+     */
     private function buildPrompt(string $name, ?string $email = null): string
     {
         $data = [
@@ -70,7 +75,6 @@ class NameClassificationService
         return <<<PROMPT
             A data a classificar (JSON-encoded) é: {$encoded}
             Aplique as regras do seu papel e preencha o schema de saída.
-            Se email for fornecido use-o para identificar o nome.
             PROMPT;
     }
 }
