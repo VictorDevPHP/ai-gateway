@@ -18,7 +18,7 @@ class NameClassificationService
     private $usageCostCalculator;
 
     public function __construct() {
-        $this->model = config('ai_models.groq.llama-3-3-70b-versatile');
+        $this->model = config('ai_models.groq.openai/gpt-oss-20b');
         $this->usageCostCalculator = new UsageCostCalculator();
     }
 
