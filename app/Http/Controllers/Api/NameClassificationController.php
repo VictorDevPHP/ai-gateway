@@ -10,11 +10,11 @@ use Throwable;
 
 class NameClassificationController extends Controller
 {
-    public function classifyName(ClassifyNameRequest $request, NameClassificationService $service): JsonResponse
+    public function classifyName(ClassifyNameRequest $request, NameClassificationService $nameClassificationService): JsonResponse
     {
         try {
             $data = $request->validated();
-            return response()->json($service->classify($data['name'], $data['email'] ?? null));
+            return response()->json($nameClassificationService->classify($data['name'], $data['email'] ?? null));
         } catch (Throwable $e) {
             return response()->json([
                 'message' => 'Não foi possível classificar o nome.',
