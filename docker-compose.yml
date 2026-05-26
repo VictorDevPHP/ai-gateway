@@ -1,0 +1,42 @@
+name: atendego
+
+services:
+  app:
+    image: php:8.4-fpm-alpine
+    working_dir: /var/www/html
+    command: >
+      sh -c "
+        apk add --no-cache curl unzip postgresql-dev &&
+        curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer &&
+        docker-php-ext-install pdo pdo_mysql pdo_pgsql bcmath &&
+        composer install --no-interaction --prefer-dist --optimize-autoloader &&
+        mkdir -p storage/framework/cache storage/framework/sessions storage/framework/views storage/logs bootstrap/cache &&
+        chmod -R 777 storage bootstrap/cache &&
+        php-fpm
+      "
+    volumes:
+      - .:/var/www/html
+      - composer-cache:/root/.composer
+    networks:
+      - ai.gateway.atendego.com-network
+      - dev-tools
+
+  nginx:
+    image: nginx:alpine
+    ports:
+      - "8104:80"
+    volumes:
+      - .:/var/www/html
+      - ./docker/nginx.conf:/etc/nginx/conf.d/default.conf:ro
+    depends_on:
+      - app
+    networks:
+      - ai.gateway.atendego.com-network
+
+networks:
+  ai.gateway.atendego.com-network:
+  dev-tools:
+    external: true
+
+volumes:
+  composer-cache:
